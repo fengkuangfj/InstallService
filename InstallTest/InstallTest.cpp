@@ -28,7 +28,7 @@ int _tmain(int argc, _TCHAR* argv[])
 			}
 		}
 
-		printfEx(MOD_MAIN, PRINTF_LEVEL_INFORMATION, "日志模块初始化完毕，按任意键继续\n");
+		printfEx(MOD_MAIN, PRINTF_LEVEL_INFORMATION, "日志模块初始化完毕，按任意键继续");
 		_getch();
 
 		Service.Install(
@@ -36,8 +36,10 @@ int _tmain(int argc, _TCHAR* argv[])
 			SERVICE_WIN32_OWN_PROCESS | SERVICE_INTERACTIVE_PROCESS,
 			SERVICE_AUTO_START,
 			SERVICE_ERROR_NORMAL,
-			_T("G:\\GitHub\\Test\\Debug\\test.exe"),
-			/*_T("C:\\Users\\Administrator\\Desktop\\test\\test.exe"),*/
+			// _T("G:\\GitHub\\Test\\Debug\\test.exe"),								// main
+			_T("C:\\Documents and Settings\\Administrator\\桌面\\test\\test.exe"),	// xp
+			// _T("C:\\Users\\Test1\\Desktop\\test\\test.exe"),						// win7x86
+			// _T("C:\\Users\\Administrator\\Desktop\\test\\test.exe"),				// win7x64
 			NULL,
 			NULL
 			);
