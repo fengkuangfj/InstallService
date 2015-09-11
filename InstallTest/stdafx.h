@@ -16,3 +16,4 @@
 #include <conio.h>
 
 #include "..\\..\\Public\\Service\Service.h"
+#include "..\\..\\Public\\OperationSystemVersion\\OperationSystemVersion.h"

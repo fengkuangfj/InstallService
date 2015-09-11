@@ -7,11 +7,14 @@
 
 int _tmain(int argc, _TCHAR* argv[])
 {
-	TCHAR			tchPdbDir[MAX_PATH] = {0};
-	LPTSTR			lpPosition			= NULL;
+	TCHAR					tchPdbDir[MAX_PATH]		= {0};
+	LPTSTR					lpPosition				= NULL;
+	OS_VER_AND_PROC_TYPE	OsVerAndProcType		= OS_VER_AND_PROC_TYPE_UNKNOWN;
+	TCHAR					tchPath[MAX_PATH]		= {0};
 
-	CPrintfEx		PrintfEx;
-	CService		Service;
+	CPrintfEx				PrintfEx;
+	CService				Service;
+	COperationSystemVersion	OperationSystemVersion;
 
 
 	__try
@@ -31,18 +34,48 @@ int _tmain(int argc, _TCHAR* argv[])
 		printfEx(MOD_MAIN, PRINTF_LEVEL_INFORMATION, "日志模块初始化完毕，按任意键继续");
 		_getch();
 
-		Service.Install(
+		OsVerAndProcType = OperationSystemVersion.GetOsVerAndProcType();
+		switch (OsVerAndProcType)
+		{
+		case OS_VER_AND_PROC_TYPE_WINDOWS_XP_X86:
+			{
+				_tcscat_s(tchPath, _countof(tchPath), _T("C:\\Documents and Settings\\Administrator\\桌面\\test\\test.exe"));
+				break;
+			}
+		case OS_VER_AND_PROC_TYPE_WINDOWS_7_X86:
+			{
+				_tcscat_s(tchPath, _countof(tchPath), _T("C:\\Users\\Test1\\Desktop\\test\\test.exe"));
+				break;
+			}
+		case OS_VER_AND_PROC_TYPE_WINDOWS_7_X64:
+			{
+				if (PathFileExists(_T("G:\\GitHub\\Test\\Debug\\test.exe")))
+					_tcscat_s(tchPath, _countof(tchPath), _T("G:\\GitHub\\Test\\Debug\\test.exe"));
+				else
+					_tcscat_s(tchPath, _countof(tchPath), _T("C:\\Users\\Administrator\\Desktop\\test\\test.exe"));
+
+				break;
+			}
+		default:
+			{
+				printfEx(MOD_MAIN, PRINTF_LEVEL_ERROR, "OsVerAndProcType error. %d", OsVerAndProcType);
+				__leave;
+			}
+		}
+
+		if (!Service.Install(
 			_T("test"),
 			SERVICE_WIN32_OWN_PROCESS | SERVICE_INTERACTIVE_PROCESS,
 			SERVICE_AUTO_START,
 			SERVICE_ERROR_NORMAL,
-			// _T("G:\\GitHub\\Test\\Debug\\test.exe"),								// main
-			_T("C:\\Documents and Settings\\Administrator\\桌面\\test\\test.exe"),	// xp
-			// _T("C:\\Users\\Test1\\Desktop\\test\\test.exe"),						// win7x86
-			// _T("C:\\Users\\Administrator\\Desktop\\test\\test.exe"),				// win7x64
+			tchPath,
 			NULL,
 			NULL
-			);
+			))
+		{
+			printfEx(MOD_MAIN, PRINTF_LEVEL_ERROR, "Service.Install failed");
+			__leave;
+		}
 	}
 	__finally
 	{
