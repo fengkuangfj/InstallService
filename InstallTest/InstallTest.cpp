@@ -65,7 +65,9 @@ int _tmain(int argc, _TCHAR* argv[])
 
 		if (!Service.Install(
 			_T("test"),
-			SERVICE_WIN32_OWN_PROCESS | SERVICE_INTERACTIVE_PROCESS,
+			_T("testDisplayName"),
+			_T("testDescription"),
+			SERVICE_WIN32_OWN_PROCESS,
 			SERVICE_AUTO_START,
 			SERVICE_ERROR_NORMAL,
 			tchPath,
