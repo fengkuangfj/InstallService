@@ -15,5 +15,6 @@
 // TODO: 在此处引用程序需要的其他头文件
 #include <conio.h>
 
+#include "..\\..\\Public\\ProcessType\\ProcessType.h"
 #include "..\\..\\Public\\Service\Service.h"
 #include "..\\..\\Public\\OperationSystemVersion\\OperationSystemVersion.h"

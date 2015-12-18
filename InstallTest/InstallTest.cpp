@@ -7,10 +7,7 @@
 
 int _tmain(int argc, _TCHAR* argv[])
 {
-	TCHAR					tchPdbDir[MAX_PATH]		= {0};
-	LPTSTR					lpPosition				= NULL;
-	OS_VER_AND_PROC_TYPE	OsVerAndProcType		= OS_VER_AND_PROC_TYPE_UNKNOWN;
-	TCHAR					tchPath[MAX_PATH]		= {0};
+	OS_VERSION_USER_DEFINED	OsVerAndProcType		= OS_VERSION_UNKNOWN;
 
 	CPrintfEx				PrintfEx;
 	CService				Service;
@@ -19,49 +16,14 @@ int _tmain(int argc, _TCHAR* argv[])
 
 	__try
 	{
-		if (GetModuleFileName(NULL, tchPdbDir, _countof(tchPdbDir)))
-		{
-			lpPosition = _tcsrchr(tchPdbDir, _T('\\'));
-			if (lpPosition)
-			{
-				*(lpPosition) = _T('\0');
-
-				if (!PrintfEx.Init(tchPdbDir, TRUE))
-					printfEx(MOD_MAIN, PRINTF_LEVEL_ERROR, "PrintfEx.Init failed");
-			}
-		}
+		if (!PrintfEx.Init())
+			printfEx(MOD_MAIN, PRINTF_LEVEL_ERROR, "PrintfEx.Init failed");
 
 		printfEx(MOD_MAIN, PRINTF_LEVEL_INFORMATION, "日志模块初始化完毕，按任意键继续");
 		_getch();
 
-		OsVerAndProcType = OperationSystemVersion.GetOsVerAndProcType();
-		switch (OsVerAndProcType)
-		{
-		case OS_VER_AND_PROC_TYPE_WINDOWS_XP_X86:
-			{
-				_tcscat_s(tchPath, _countof(tchPath), _T("C:\\Documents and Settings\\Administrator\\桌面\\test\\test.exe"));
-				break;
-			}
-		case OS_VER_AND_PROC_TYPE_WINDOWS_7_X86:
-			{
-				_tcscat_s(tchPath, _countof(tchPath), _T("C:\\Users\\Test1\\Desktop\\test\\test.exe"));
-				break;
-			}
-		case OS_VER_AND_PROC_TYPE_WINDOWS_7_X64:
-			{
-				if (PathFileExists(_T("G:\\GitHub\\Test\\Debug\\test.exe")))
-					_tcscat_s(tchPath, _countof(tchPath), _T("G:\\GitHub\\Test\\Debug\\test.exe"));
-				else
-					_tcscat_s(tchPath, _countof(tchPath), _T("C:\\Users\\Administrator\\Desktop\\test\\test.exe"));
-
-				break;
-			}
-		default:
-			{
-				printfEx(MOD_MAIN, PRINTF_LEVEL_ERROR, "OsVerAndProcType error. %d", OsVerAndProcType);
-				__leave;
-			}
-		}
+		if (!OperationSystemVersion.Init())
+			printfEx(MOD_MAIN, PRINTF_LEVEL_ERROR, "OperationSystemVersion.Init failed");
 
 		if (!Service.Install(
 			_T("test"),
@@ -70,7 +32,7 @@ int _tmain(int argc, _TCHAR* argv[])
 			SERVICE_WIN32_OWN_PROCESS,
 			SERVICE_AUTO_START,
 			SERVICE_ERROR_NORMAL,
-			tchPath,
+			_T("G:\\GitHub\\Test\\Debug\\Test.exe"),
 			NULL,
 			NULL
 			))
@@ -83,8 +45,6 @@ int _tmain(int argc, _TCHAR* argv[])
 	{
 		printfEx(MOD_MAIN, PRINTF_LEVEL_INFORMATION, "按任意键退出");
 		_getch();
-		if (!PrintfEx.Unload())
-			printfEx(MOD_MAIN, PRINTF_LEVEL_ERROR, "PrintfEx.Unload failed");
 	}
 
 	return 0;
