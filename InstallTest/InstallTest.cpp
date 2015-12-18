@@ -34,7 +34,8 @@ int _tmain(int argc, _TCHAR* argv[])
 			SERVICE_ERROR_NORMAL,
 			_T("G:\\GitHub\\Test\\Debug\\Test.exe"),
 			NULL,
-			NULL
+			NULL,
+			TRUE
 			))
 		{
 			printfEx(MOD_MAIN, PRINTF_LEVEL_ERROR, "Service.Install failed");
