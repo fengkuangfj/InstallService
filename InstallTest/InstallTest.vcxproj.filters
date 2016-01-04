@@ -39,6 +39,12 @@
     <ClInclude Include="..\..\Public\ProcessType\ProcessType.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Public\ProcessPath\ProcessPath.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Public\ModulePath\ModulePath.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -60,6 +66,12 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Public\ProcessType\ProcessType.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Public\ProcessPath\ProcessPath.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Public\ModulePath\ModulePath.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
