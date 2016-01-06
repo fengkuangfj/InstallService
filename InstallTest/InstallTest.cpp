@@ -7,25 +7,15 @@
 
 int _tmain(int argc, _TCHAR* argv[])
 {
-	OS_VERSION_USER_DEFINED	OsVerAndProcType		= OS_VERSION_UNKNOWN;
-
-	CPrintfEx				PrintfEx;
-	CService				Service;
-	COperationSystemVersion	OperationSystemVersion;
+	OS_VERSION_USER_DEFINED	OsVerAndProcType = OS_VERSION_UNKNOWN;
 
 
 	__try
 	{
-		if (!PrintfEx.Init())
-			printfEx(MOD_MAIN, PRINTF_LEVEL_ERROR, "PrintfEx.Init failed");
-
 		printfEx(MOD_MAIN, PRINTF_LEVEL_INFORMATION, "日志模块初始化完毕，按任意键继续");
 		_getch();
 
-		if (!OperationSystemVersion.Init())
-			printfEx(MOD_MAIN, PRINTF_LEVEL_ERROR, "OperationSystemVersion.Init failed");
-
-		if (!Service.Install(
+		if (!CService::GetInstance()->Install(
 			_T("test"),
 			_T("testDisplayName"),
 			_T("testDescription"),
@@ -44,7 +34,10 @@ int _tmain(int argc, _TCHAR* argv[])
 	}
 	__finally
 	{
+		CService::ReleaseInstance();
+
 		printfEx(MOD_MAIN, PRINTF_LEVEL_INFORMATION, "按任意键退出");
+		CPrintfEx::ReleaseInstance();
 		_getch();
 	}
 
